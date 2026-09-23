@@ -182,6 +182,11 @@ const Login = () => {
                 Forgotten Password
               </p>
             </a>
+            <a href="/register">
+              <p className="text-center mt-4 text-[#9D9D9D] underline font-semibold text-sm cursor-pointer hover:text-gray-600">
+                register
+              </p>
+            </a>
           </div>
         </div>
 

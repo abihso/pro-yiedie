@@ -15,8 +15,10 @@ const Register = () => {
   });
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const updateField = (field: keyof typeof form, value: string) =>
     setForm((current) => ({ ...current, [field]: value }));
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
@@ -52,12 +54,11 @@ const Register = () => {
 
   return (
     <div className="flex flex-col xl:flex-row justify-between min-h-screen w-full">
-      {/* Left Column (Maintained from Login for branding consistency) */}
+      {/* Left Column */}
       <div className="w-full xl:w-1/2 min-h-screen py-10 xl:pt-20 xl:pb-28 flex flex-col items-center px-6 sm:px-16 xl:px-28 relative">
         <div className="w-full max-w-xl">
-          <div className="flex items-center gap-3 rounded-3xl border w-fit px-10 border-[#04EEFF] bg-[#E7F2FF]">
-            <img src={Images[0]} alt="" className="w-10 h-20 object-contain" />
-            <p className="font-bold text-4xl ml-2">Yiedie</p>
+          <div className="flex justify-center">
+            <img src={Images[0]} alt="" className="w-20 h-25 object-contain" />
           </div>
 
           <p className="mt-16 font-medium text-base leading-relaxed">
@@ -72,25 +73,25 @@ const Register = () => {
 
           <div className="w-full mt-20">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-[#1900FF] rounded-full shrink-0" />
+              <div className="w-3 h-3 bg-color5 rounded-full shrink-0" />
               <p className="text-[#0F0282] font-bold text-sm sm:text-base">
                 Academic Management & Career counselling
               </p>
             </div>
             <div className="flex items-center gap-2 mt-2">
-              <div className="w-3 h-3 bg-[#1900FF] rounded-full shrink-0" />
+              <div className="w-3 h-3 bg-color5 rounded-full shrink-0" />
               <p className="text-[#0F0282] font-bold text-sm sm:text-base">
                 Financial Planning & Business Consultation
               </p>
             </div>
             <div className="flex items-center gap-2 mt-2">
-              <div className="w-3 h-3 bg-[#1900FF] rounded-full shrink-0" />
+              <div className="w-3 h-3 bg-color5 rounded-full shrink-0" />
               <p className="text-[#0F0282] font-bold text-sm sm:text-base">
                 Relationships & Marriage Counselling
               </p>
             </div>
             <div className="flex items-center gap-2 mt-2">
-              <div className="w-3 h-3 bg-[#1900FF] rounded-full shrink-0" />
+              <div className="w-3 h-3 bg-color5 rounded-full shrink-0" />
               <p className="text-[#0F0282] font-bold text-sm sm:text-base">
                 Religious and Spiritual Counselling etc.
               </p>
@@ -99,35 +100,35 @@ const Register = () => {
 
           <div className="flex flex-wrap w-full mt-20">
             <div className="w-1/2 h-28 pr-2 pb-3">
-              <div className="h-full rounded-3xl px-4 sm:px-7 bg-[#F4F9FF] border border-[#D0E2FF] flex flex-col justify-center">
-                <p className="font-bold text-xl text-[#0F0282]">100%</p>
-                <p className="font-medium text-xs sm:text-sm text-gray-700">
+              <div className="h-full rounded-3xl px-4 sm:px-7 bg-color4 border border-[#D0E2FF] flex flex-col justify-center">
+                <p className="font-bold text-xl text-color5">100%</p>
+                <p className="font-medium text-xs sm:text-sm text-white">
                   Verified Counsellors and Consultants
                 </p>
               </div>
             </div>
             <div className="w-1/2 h-28 pl-2 pb-3">
-              <div className="h-full rounded-3xl px-4 sm:px-7 bg-[#F4F9FF] border border-[#D0E2FF] flex flex-col justify-center">
-                <p className="font-bold text-xl text-[#0F0282]">AI-Powered</p>
-                <p className="font-medium text-xs sm:text-sm text-gray-700">
+              <div className="h-full rounded-3xl px-4 sm:px-7 bg-color4 border border-[#D0E2FF] flex flex-col justify-center">
+                <p className="font-bold text-xl text-color5">AI-Powered</p>
+                <p className="font-medium text-xs sm:text-sm text-white">
                   Predictions
                 </p>
               </div>
             </div>
             <div className="w-1/2 h-28 pr-2 pt-3">
-              <div className="h-full rounded-3xl px-4 sm:px-7 bg-[#F4F9FF] border border-[#D0E2FF] flex flex-col justify-center">
-                <p className="font-bold text-xl text-[#0F0282]">Real-time</p>
-                <p className="font-medium text-xs sm:text-sm text-gray-700">
+              <div className="h-full rounded-3xl px-4 sm:px-7 bg-color4 border border-[#D0E2FF] flex flex-col justify-center">
+                <p className="font-bold text-xl text-color5">Real-time</p>
+                <p className="font-medium text-xs sm:text-sm text-white">
                   Analytics and Live Chats supports
                 </p>
               </div>
             </div>
             <div className="w-1/2 h-28 pl-2 pt-3">
-              <div className="h-full rounded-3xl px-4 sm:px-7 bg-[#F4F9FF] border border-[#D0E2FF] flex flex-col justify-center">
-                <p className="font-bold text-xl text-[#0F0282]">
+              <div className="h-full rounded-3xl px-4 sm:px-7 bg-color4 border border-[#D0E2FF] flex flex-col justify-center">
+                <p className="font-bold text-xl text-color5">
                   360<sup>o</sup>{" "}
                 </p>
-                <p className="font-medium text-xs sm:text-sm text-gray-700">
+                <p className="font-medium text-xs sm:text-sm text-white">
                   Security Management
                 </p>
               </div>
@@ -136,7 +137,7 @@ const Register = () => {
         </div>
 
         <div className="xl:absolute xl:bottom-10 px-6 sm:px-16 xl:px-28 w-full mt-12 xl:mt-0">
-          <p className="text-xs sm:text-[14px] text-gray-500">
+          <p className="text-xs sm:text-[14px] text-[#0A0332]">
             Health | Education and Career | Relationship and Marriage | Finance
             | Legal | Personal | Religious & Spiritual | Social Support |
             Motivation and Inspiration |
@@ -145,14 +146,16 @@ const Register = () => {
       </div>
 
       {/* Right Column - Registration Form */}
-      <div className="bg-[#ebf6ff] w-full xl:w-1/2 min-h-screen py-10 xl:pt-20 xl:pb-28 flex flex-col items-center px-6 sm:px-16 xl:px-28 relative">
+      <div className="bg-color4 w-full xl:w-1/2 min-h-screen py-10 xl:pt-20 xl:pb-28 flex flex-col items-center px-6 sm:px-16 xl:px-28 relative">
         <div className="w-full max-w-xl">
-          <div className="w-full mt-6 text-[#1900FF] font-bold">
-            <p className="text-3xl sm:text-4xl">Welcome to Yiedie,</p>
-            <p className="text-3xl sm:text-4xl mt-2">
+          <div className="w-full mt-6 font-bold">
+            <p className="text-3xl sm:text-4xl text-color5">
+              Welcome back to Yiedie,
+            </p>
+            <p className="text-3xl sm:text-4xl mt-2 text-white">
               Please Sign-up to continue
             </p>
-            <p className="text-xs sm:text-sm mt-2 font-medium text-gray-600">
+            <p className="text-xs sm:text-sm mt-2 font-medium text-white">
               Enter your correct details to create your account
             </p>
           </div>
@@ -160,39 +163,66 @@ const Register = () => {
           <div className="w-full mt-8">
             <form className="flex flex-col" onSubmit={handleSubmit}>
               {/* Role */}
-              <label
-                className="text-sm font-bold text-[#0A0332]"
-                htmlFor="role"
-              >
-                Role <span className="text-red-500">*</span>
+              <label className="text-sm font-bold text-white" htmlFor="role">
+                Role <span className="text-red-400">*</span>
               </label>
-              <div className="bg-[#bbb1ff50] rounded-2xl pr-2 mt-2">
-                <select
-                  className="h-14 w-full rounded-2xl p-3  text-sm sm:text-base outline-none focus:ring-2 focus:ring-[#1900FF]"
-                  id="role"
-                  value={form.role}
-                  onChange={(event) => updateField("role", event.target.value)}
+              <div className="flex flex-col w-full mt-6">
+                <label
+                  className="text-sm font-bold text-white mb-2"
+                  htmlFor="role"
                 >
-                  <option value="" disabled>
-                    Select your role
-                  </option>
-                  <option value="client">Student / Client</option>
-                  <option value="counsellor">Counsellor / Consultant</option>
-                </select>
+                  Account Role <span className="text-red-400">*</span>
+                </label>
+                <div className="relative w-full">
+                  <select
+                    id="role"
+                    value={form.role}
+                    onChange={(event) =>
+                      updateField("role", event.target.value)
+                    }
+                    className="h-14 w-full appearance-none rounded-2xl bg-white px-4 py-3 pr-10 text-sm sm:text-base text-gray-900 outline-none focus:ring-2 focus:ring-[#1900FF] cursor-pointer"
+                  >
+                    <option value="" disabled className="text-gray-400">
+                      Select your role
+                    </option>
+                    <option value="client" className="text-gray-900">
+                      Student / Client
+                    </option>
+                    <option value="counsellor" className="text-gray-900">
+                      Counsellor / Consultant
+                    </option>
+                  </select>
+                  {/* Custom Dropdown Chevron Icon */}
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-700">
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </div>
+                </div>
               </div>
 
               {/* First Name & Middle Name */}
               <div className="flex flex-col sm:flex-row gap-4 mt-6">
                 <div className="flex flex-col w-full sm:w-1/2">
                   <label
-                    className="text-sm font-bold text-[#0A0332]"
+                    className="text-sm font-bold text-white"
                     htmlFor="firstName"
                   >
-                    First Name <span className="text-red-500">*</span>
+                    First Name <span className="text-red-400">*</span>
                   </label>
                   <input
                     type="text"
-                    className="h-14 rounded-2xl mt-2 p-3 bg-[#bbb1ff50] text-sm sm:text-base outline-none focus:ring-2 focus:ring-[#1900FF]"
+                    className="h-14 rounded-2xl mt-2 p-3 bg-white text-sm sm:text-base outline-none focus:ring-2 focus:ring-[#1900FF]"
                     placeholder="Enter your first name"
                     id="firstName"
                     value={form.firstName}
@@ -203,14 +233,14 @@ const Register = () => {
                 </div>
                 <div className="flex flex-col w-full sm:w-1/2">
                   <label
-                    className="text-sm font-bold text-[#0A0332]"
+                    className="text-sm font-bold text-white"
                     htmlFor="middleName"
                   >
                     Middle Name
                   </label>
                   <input
                     type="text"
-                    className="h-14 rounded-2xl mt-2 p-3 bg-[#bbb1ff50] text-sm sm:text-base outline-none focus:ring-2 focus:ring-[#1900FF]"
+                    className="h-14 rounded-2xl mt-2 p-3 bg-white text-sm sm:text-base outline-none focus:ring-2 focus:ring-[#1900FF]"
                     placeholder="Enter your middle name"
                     id="middleName"
                     value={form.middleName}
@@ -223,14 +253,14 @@ const Register = () => {
 
               {/* Last Name */}
               <label
-                className="text-sm font-bold text-[#0A0332] mt-6"
+                className="text-sm font-bold text-white mt-6"
                 htmlFor="lastName"
               >
-                Last Name <span className="text-red-500">*</span>
+                Last Name <span className="text-red-400">*</span>
               </label>
               <input
                 type="text"
-                className="h-14 rounded-2xl mt-2 p-3 bg-[#bbb1ff50] text-sm sm:text-base outline-none focus:ring-2 focus:ring-[#1900FF]"
+                className="h-14 rounded-2xl mt-2 p-3 bg-white text-sm sm:text-base outline-none focus:ring-2 focus:ring-[#1900FF]"
                 placeholder="Enter your last name"
                 id="lastName"
                 value={form.lastName}
@@ -241,14 +271,14 @@ const Register = () => {
 
               {/* Email */}
               <label
-                className="text-sm font-bold text-[#0A0332] mt-6"
+                className="text-sm font-bold text-white mt-6"
                 htmlFor="email"
               >
-                Email <span className="text-red-500">*</span>
+                Email <span className="text-red-400">*</span>
               </label>
               <input
                 type="email"
-                className="h-14 rounded-2xl mt-2 p-3 bg-[#bbb1ff50] text-sm sm:text-base outline-none focus:ring-2 focus:ring-[#1900FF]"
+                className="h-14 rounded-2xl mt-2 p-3 bg-white text-sm sm:text-base outline-none focus:ring-2 focus:ring-[#1900FF]"
                 placeholder="Enter email"
                 id="email"
                 value={form.email}
@@ -257,14 +287,14 @@ const Register = () => {
 
               {/* Password */}
               <label
-                className="text-sm font-bold text-[#0A0332] mt-6"
+                className="text-sm font-bold text-white mt-6"
                 htmlFor="password"
               >
-                Password <span className="text-red-500">*</span>
+                Password <span className="text-red-400">*</span>
               </label>
               <input
                 type="password"
-                className="h-14 rounded-2xl mt-2 p-3 bg-[#bbb1ff50] text-sm sm:text-base outline-none focus:ring-2 focus:ring-[#1900FF]"
+                className="h-14 rounded-2xl mt-2 p-3 bg-white text-sm sm:text-base outline-none focus:ring-2 focus:ring-[#1900FF]"
                 placeholder="Enter password"
                 id="password"
                 value={form.password}
@@ -275,14 +305,14 @@ const Register = () => {
 
               {/* Confirm Password */}
               <label
-                className="text-sm font-bold text-[#0A0332] mt-6"
+                className="text-sm font-bold text-white mt-6"
                 htmlFor="confirmPassword"
               >
-                Confirm password <span className="text-red-500">*</span>
+                Confirm password <span className="text-red-400">*</span>
               </label>
               <input
                 type="password"
-                className="h-14 rounded-2xl mt-2 p-3 bg-[#bbb1ff50] text-sm sm:text-base outline-none focus:ring-2 focus:ring-[#1900FF]"
+                className="h-14 rounded-2xl mt-2 p-3 bg-white text-sm sm:text-base outline-none focus:ring-2 focus:ring-[#1900FF]"
                 placeholder="Confirm password"
                 id="confirmPassword"
                 value={form.confirmPassword}
@@ -291,45 +321,39 @@ const Register = () => {
                 }
               />
 
-              {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+              {error && <p className="mt-3 text-sm text-red-200">{error}</p>}
 
               <Button
                 variant={"secondary"}
                 type="submit"
                 disabled={isSubmitting}
-                className="mt-8 h-14 w-full rounded-2xl text-base text-white font-semibold bg-[#1900FF] hover:bg-[#1900ffa2]"
+                className="mt-8 h-14 w-full rounded-2xl text-base text-white font-semibold bg-[#FEAD01] hover:bg-[#ff9900c8]"
               >
                 {isSubmitting ? "Creating Account..." : "Sign Up"}
               </Button>
             </form>
 
             <div className="flex justify-center items-center gap-1 mt-4 text-sm font-semibold">
-              <span className="text-[#9D9D9D]">already has an account,</span>
-              <a href="#signin" onClick={(e) => e.preventDefault()}>
-                <span className="text-[#1900FF] hover:underline cursor-pointer">
-                  sign in
+              <span className="text-[#9D9D9D]">Already have an account?</span>
+              <a href="/login">
+                <span className="text-white hover:underline cursor-pointer">
+                  Sign in
                 </span>
               </a>
             </div>
           </div>
         </div>
 
-        <div className="xl:absolute xl:bottom-10 w-full flex flex-col items-center mt-12 xl:mt-0 px-6 sm:px-16 xl:px-28">
+        <div className="xl:absolute xl:bottom-10 w-full text-white flex flex-col items-center mt-12 xl:mt-0 px-6 sm:px-16 xl:px-28">
           <div className="flex gap-4 mt-5 text-sm">
-            <span className="text-[#9D9D9D] cursor-pointer hover:underline">
-              policies
-            </span>
-            <span className="text-[#9D9D9D] cursor-pointer hover:underline">
-              Supports
-            </span>
-            <span className="text-[#9D9D9D] cursor-pointer hover:underline">
-              Help centre
-            </span>
+            <span className="cursor-pointer hover:underline">policies</span>
+            <span className="cursor-pointer hover:underline">Supports</span>
+            <span className="cursor-pointer hover:underline">Help centre</span>
           </div>
-          <p className="text-[#9D9D9D] mt-2 text-center text-xs">
+          <p className="mt-2 text-center text-xs">
             Copyright © 2024-2025 AltBit Softwares. All rights reserved.
           </p>
-          <p className="text-[#9D9D9D] mt-0.5 text-center text-xs">
+          <p className="mt-0.5 text-center text-xs">
             counselling and consultation app
           </p>
         </div>
