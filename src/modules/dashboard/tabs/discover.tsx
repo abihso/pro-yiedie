@@ -225,7 +225,7 @@ const Discover = () => {
       <div className="fixed bottom-3 sm:bottom-5 left-0 right-0 flex justify-center z-50 pointer-events-none px-4">
         <div className="h-14 sm:h-16 w-full max-w-md sm:w-auto px-4 sm:px-8 shadow-xl hover:shadow-2xl hover:shadow-[#1900FF]/15 bg-white/90 hover:bg-white backdrop-blur-md border border-gray-200 hover:border-[#A19EFF] rounded-full flex items-center justify-around sm:justify-center gap-1 sm:gap-4 pointer-events-auto transition-all duration-300 ease-in-out hover:-translate-y-1">
           {/* Home Button */}
-          <Button className="group flex-col bg-transparent h-fit p-1.5 sm:p-2.5 hover:bg-[#EDEBFF]/60 rounded-2xl shadow-none border-none transition-all duration-200 hover:scale-105 active:scale-95">
+          <Button onClick={() => window.location.href = "/home"}  className="group flex-col bg-transparent h-fit p-1.5 sm:p-2.5 hover:bg-[#EDEBFF]/60 rounded-2xl shadow-none border-none transition-all duration-200 hover:scale-105 active:scale-95">
             <HomeBrokenIcon
               className="text-[#010158] group-hover:text-[#FFAE00] text-lg sm:text-xl transition-transform duration-200 group-hover:-translate-y-0.5"
               height="1em"

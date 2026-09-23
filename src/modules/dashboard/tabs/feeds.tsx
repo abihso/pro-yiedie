@@ -586,17 +586,17 @@ const Feeds = () => {
               </div>
               <div className="space-y-1 px-2 mt-2">
                 {[
-                  { icon: HomeBrokenIcon, label: "Home" },
-                  { icon: DiscoverOutlinedIcon, label: "Discover" },
-                  { icon: SaveIcon, label: "Saved" },
-                  { icon: PlusIcon, label: "Add Post" },
-                  { icon: CommentOutlineIcon, label: "Chats" },
-                  { icon: PeopleGroupIcon, label: "Communities" },
-                  { icon: NotificationLineIcon, label: "Notification" },
+                  {link : "home", icon: HomeBrokenIcon, label: "Home" },
+                  {link : "discover", icon: DiscoverOutlinedIcon, label: "Discover" },
+                  {link : "saved", icon: SaveIcon, label: "Saved" },
+                  {link : "add-post", icon: PlusIcon, label: "Add Post" },
+                  {link : "chats", icon: CommentOutlineIcon, label: "Chats" },
+                  {link : "communities", icon: PeopleGroupIcon, label: "Communities" },
+                  {link : "", icon: NotificationLineIcon, label: "Notification" },
                 ].map((item, idx) => {
                   const Icon = item.icon;
                   return (
-                    <div
+                    <button
                       key={idx}
                       className="flex items-center gap-2 p-2 rounded-lg cursor-pointer transition-all duration-200 hover:bg-black/5 dark:hover:bg-white/5 hover:translate-x-1 active:scale-95"
                     >
@@ -605,7 +605,7 @@ const Feeds = () => {
                         className="transition-transform duration-200 group-hover:scale-110"
                       />
                       <p className="text-xs">{item.label}</p>
-                    </div>
+                    </button>
                   );
                 })}
               </div>
