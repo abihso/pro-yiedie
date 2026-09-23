@@ -152,6 +152,7 @@ const Register = () => {
             <p className="text-3xl sm:text-4xl text-color5">
               Welcome back to Yiedie,
             </p>
+            
             <p className="text-3xl sm:text-4xl mt-2 text-white">
               Please Sign-up to continue
             </p>
@@ -163,9 +164,7 @@ const Register = () => {
           <div className="w-full mt-8">
             <form className="flex flex-col" onSubmit={handleSubmit}>
               {/* Role */}
-              <label className="text-sm font-bold text-white" htmlFor="role">
-                Role <span className="text-red-400">*</span>
-              </label>
+              
               <div className="flex flex-col w-full mt-6">
                 <label
                   className="text-sm font-bold text-white mb-2"
@@ -334,8 +333,8 @@ const Register = () => {
             </form>
 
             <div className="flex justify-center items-center gap-1 mt-4 text-sm font-semibold">
+              <a href="/">
               <span className="text-[#9D9D9D]">Already have an account?</span>
-              <a href="/login">
                 <span className="text-white hover:underline cursor-pointer">
                   Sign in
                 </span>
