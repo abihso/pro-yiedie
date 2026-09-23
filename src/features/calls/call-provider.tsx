@@ -7,7 +7,11 @@ import { Phone, PhoneOff, Video, X } from "lucide-react";
 import { api, API_ORIGIN } from "../../lib/api";
 import type { User } from "../../lib/api";
 import { CallsContext } from "./call-context";
-import type { AcceptedCall, CallInvitation, StartCallInput } from "./call-context";
+import type {
+  AcceptedCall,
+  CallInvitation,
+  StartCallInput,
+} from "./call-context";
 import { socketRequest } from "./socket-request";
 
 type PendingCalls = {
@@ -16,6 +20,7 @@ type PendingCalls = {
 };
 
 const emptyCalls: PendingCalls = { incoming: null, outgoing: null };
+const TEN_MINUTES_MS = 10 * 60 * 400;
 
 function errorMessage(error: unknown) {
   return error instanceof Error ? error.message : "Unable to update this call.";
@@ -39,19 +44,40 @@ function CallPrompt({
   onDismiss: () => void;
 }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+
+  // Calculate seconds remaining out of a 10-minute duration based on expiresAt
   const [seconds, setSeconds] = useState(() =>
-    Math.max(0, Math.ceil((Date.parse(invitation.expiresAt) - Date.now()) / 1000)),
+    Math.max(
+      0,
+      Math.ceil(
+        (Date.parse(invitation.expiresAt) + TEN_MINUTES_MS - Date.now()) / 1000,
+      ),
+    ),
   );
+
   const [notificationPermission, setNotificationPermission] = useState(() =>
     "Notification" in window ? Notification.permission : "unsupported",
   );
   const name = incoming ? invitation.fromUserName : invitation.targetUserName;
-  const initials = name.split(" ").filter(Boolean).slice(0, 2).map((part) => part[0]).join("");
+  const initials = name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("");
   const CallIcon = invitation.type === "video" ? Video : Phone;
 
   useEffect(() => {
     const interval = window.setInterval(() => {
-      setSeconds(Math.max(0, Math.ceil((Date.parse(invitation.expiresAt) - Date.now()) / 1000)));
+      setSeconds(
+        Math.max(
+          0,
+          Math.ceil(
+            (Date.parse(invitation.expiresAt) + TEN_MINUTES_MS - Date.now()) /
+              1000,
+          ),
+        ),
+      );
     }, 1000);
     return () => window.clearInterval(interval);
   }, [invitation.expiresAt]);
@@ -73,16 +99,32 @@ function CallPrompt({
           <p className="text-xs font-semibold uppercase tracking-wide text-[#1900FF]">
             {incoming ? "Incoming" : "Outgoing"} {invitation.type} call
           </p>
-          <h2 id="call-prompt-title" className="mt-1 break-words text-xl font-bold text-[#0A0332]">{name}</h2>
-          <p id="call-prompt-description" className="mt-1 text-sm text-slate-600">
+          <h2
+            id="call-prompt-title"
+            className="mt-1 break-words text-xl font-bold text-[#0A0332]"
+          >
+            {name}
+          </h2>
+          <p
+            id="call-prompt-description"
+            className="mt-1 text-sm text-slate-600"
+          >
             {incoming ? "is calling you" : "Waiting for an answer…"}
           </p>
         </div>
       </div>
       <p className="mt-4 text-sm text-slate-500" role="status">
-        {!connected ? "Reconnecting…" : seconds > 0 ? `Ringing · ${seconds}s remaining` : "Checking call status…"}
+        {!connected
+          ? "Reconnecting…"
+          : seconds > 0
+            ? `Ringing · ${seconds}s remaining`
+            : "Checking call status…"}
       </p>
-      {error && <p role="alert" className="mt-3 text-sm text-red-700">{error}</p>}
+      {error && (
+        <p role="alert" className="mt-3 text-sm text-red-700">
+          {error}
+        </p>
+      )}
       <div className="mt-5 flex gap-3">
         <button
           type="button"
@@ -108,7 +150,9 @@ function CallPrompt({
           type="button"
           className="mt-4 text-xs text-slate-600 underline hover:text-[#1900FF]"
           onClick={() => {
-            void Notification.requestPermission().then(setNotificationPermission).catch(() => {});
+            void Notification.requestPermission()
+              .then(setNotificationPermission)
+              .catch(() => {});
           }}
         >
           Enable desktop alerts for future calls
@@ -132,7 +176,10 @@ function CallPrompt({
   }
 
   return (
-    <section aria-labelledby="call-prompt-title" className="fixed right-4 bottom-4 z-50 w-[calc(100%-2rem)] max-w-sm rounded-3xl border border-[#ACA9FF] bg-white p-6 shadow-2xl">
+    <section
+      aria-labelledby="call-prompt-title"
+      className="fixed right-4 bottom-4 z-50 w-[calc(100%-2rem)] max-w-sm rounded-3xl border border-[#ACA9FF] bg-white p-6 shadow-2xl"
+    >
       {content}
     </section>
   );
@@ -160,7 +207,9 @@ export function CallProvider({ children }: { children: ReactNode }) {
   const acceptRef = useRef<(call: AcceptedCall) => void>(() => {});
   const syncRef = useRef<() => Promise<void>>(async () => {});
 
-  useEffect(() => { navigateRef.current = navigate; }, [navigate]);
+  useEffect(() => {
+    navigateRef.current = navigate;
+  }, [navigate]);
 
   useEffect(() => {
     const changed = () => {
@@ -218,14 +267,15 @@ export function CallProvider({ children }: { children: ReactNode }) {
 
     function settled(requestId: string) {
       completed.add(requestId);
-      // Keep delayed acknowledgements from resurrecting resolved invitations.
       if (completed.size > 100) {
         completed.delete(completed.values().next().value!);
       }
       const previous = pendingRef.current;
       updatePending({
-        incoming: previous.incoming?.requestId === requestId ? null : previous.incoming,
-        outgoing: previous.outgoing?.requestId === requestId ? null : previous.outgoing,
+        incoming:
+          previous.incoming?.requestId === requestId ? null : previous.incoming,
+        outgoing:
+          previous.outgoing?.requestId === requestId ? null : previous.outgoing,
       });
     }
 
@@ -233,20 +283,26 @@ export function CallProvider({ children }: { children: ReactNode }) {
       if (disposed || completed.has(invitation.requestId)) return;
       updatePending({ incoming: invitation, outgoing: null });
       setNotice("");
-      if (document.hidden && "Notification" in window && Notification.permission === "granted") {
+      if (
+        document.hidden &&
+        "Notification" in window &&
+        Notification.permission === "granted"
+      ) {
         try {
           desktopAlert?.close();
-          desktopAlert = new Notification(`${invitation.fromUserName} is calling`, {
-            body: `Incoming ${invitation.type} call. Open Yiedie to accept or reject.`,
-            tag: invitation.requestId,
-          });
+          desktopAlert = new Notification(
+            `${invitation.fromUserName} is calling`,
+            {
+              body: `Incoming ${invitation.type} call. Open Yiedie to accept or reject.`,
+              tag: invitation.requestId,
+            },
+          );
           desktopAlert.onclick = () => {
             window.focus();
             desktopAlert?.close();
           };
         } catch {
-          // Some mobile browsers only support service-worker notifications.
-          // The in-app invitation remains available regardless of OS support.
+          // Fallback for browsers with strict SW requirements
         }
       }
     }
@@ -262,11 +318,14 @@ export function CallProvider({ children }: { children: ReactNode }) {
           autoConnect: false,
           withCredentials: true,
           auth: (callback) => {
-            void api.csrf().then((csrfToken) => {
-              if (!disposed) callback({ csrfToken });
-            }).catch(() => {
-              if (!disposed) callback({ csrfToken: "" });
-            });
+            void api
+              .csrf()
+              .then((csrfToken) => {
+                if (!disposed) callback({ csrfToken });
+              })
+              .catch(() => {
+                if (!disposed) callback({ csrfToken: "" });
+              });
           },
         });
         liveSocket = nextSocket;
@@ -274,7 +333,11 @@ export function CallProvider({ children }: { children: ReactNode }) {
 
         async function sync() {
           const snapshot = revision;
-          const calls = await socketRequest<PendingCalls>(nextSocket, "call:sync", {});
+          const calls = await socketRequest<PendingCalls>(
+            nextSocket,
+            "call:sync",
+            {},
+          );
           if (disposed || snapshot !== revision) return;
           updatePending(calls);
           if (calls.incoming) showIncoming(calls.incoming);
@@ -284,13 +347,23 @@ export function CallProvider({ children }: { children: ReactNode }) {
         function accepted(call: AcceptedCall) {
           if (disposed || completed.has(call.requestId)) return;
           settled(call.requestId);
-          const isCaller = identity.id === call.fromUserId && nextSocket.id === call.callerSocketId;
-          const isRecipient = identity.id === call.targetUserId && nextSocket.id === call.acceptedBySocketId;
+          const isCaller =
+            identity.id === call.fromUserId &&
+            nextSocket.id === call.callerSocketId;
+          const isRecipient =
+            identity.id === call.targetUserId &&
+            nextSocket.id === call.acceptedBySocketId;
           if (isCaller || isRecipient) {
             setNotice("");
-            navigateRef.current(`/callroom/session?callId=${encodeURIComponent(call.callId)}`, {
-              state: { peerName: isCaller ? call.targetUserName : call.fromUserName, requestId: call.requestId },
-            });
+            navigateRef.current(
+              `/callroom/session?callId=${encodeURIComponent(call.callId)}`,
+              {
+                state: {
+                  peerName: isCaller ? call.targetUserName : call.fromUserName,
+                  requestId: call.requestId,
+                },
+              },
+            );
           } else {
             setNotice("This call was answered in another tab or device.");
           }
@@ -300,7 +373,9 @@ export function CallProvider({ children }: { children: ReactNode }) {
         nextSocket.on("connect", () => {
           window.clearTimeout(retryTimer);
           setConnected(true);
-          void sync().catch((error) => { if (!disposed) setNotice(errorMessage(error)); });
+          void sync().catch((error) => {
+            if (!disposed) setNotice(errorMessage(error));
+          });
         });
         nextSocket.on("disconnect", () => {
           setConnected(false);
@@ -309,11 +384,13 @@ export function CallProvider({ children }: { children: ReactNode }) {
         nextSocket.on("connect_error", (error) => {
           setConnected(false);
           const failure = error as Error & { data?: { code?: string } };
-          if (failure.data?.code === "UNAUTHENTICATED" || failure.data?.code === "SESSION_EXPIRED") {
+          if (
+            failure.data?.code === "UNAUTHENTICATED" ||
+            failure.data?.code === "SESSION_EXPIRED"
+          ) {
             setUser(null);
             updatePending(emptyCalls);
           } else if (!nextSocket.active) {
-            // Authentication middleware rejections do not trigger Socket.IO reconnection.
             scheduleRetry();
           }
         });
@@ -321,15 +398,27 @@ export function CallProvider({ children }: { children: ReactNode }) {
         nextSocket.on("call:accepted", accepted);
         nextSocket.on("call:rejected", (invitation: CallInvitation) => {
           settled(invitation.requestId);
-          setNotice(identity.id === invitation.fromUserId ? `${invitation.targetUserName} declined your call.` : "Call declined.");
+          setNotice(
+            identity.id === invitation.fromUserId
+              ? `${invitation.targetUserName} declined your call.`
+              : "Call declined.",
+          );
         });
         nextSocket.on("call:cancelled", (invitation: CallInvitation) => {
           settled(invitation.requestId);
-          setNotice(identity.id === invitation.targetUserId ? `${invitation.fromUserName} cancelled the call.` : "Call cancelled.");
+          setNotice(
+            identity.id === invitation.targetUserId
+              ? `${invitation.fromUserName} cancelled the call.`
+              : "Call cancelled.",
+          );
         });
         nextSocket.on("call:expired", (invitation: CallInvitation) => {
           settled(invitation.requestId);
-          setNotice(identity.id === invitation.fromUserId ? `${invitation.targetUserName} did not answer.` : `Missed ${invitation.type} call from ${invitation.fromUserName}.`);
+          setNotice(
+            identity.id === invitation.fromUserId
+              ? `${invitation.targetUserName} did not answer.`
+              : `Missed ${invitation.type} call from ${invitation.fromUserName}.`,
+          );
         });
         nextSocket.connect();
       } catch (error) {
@@ -369,18 +458,26 @@ export function CallProvider({ children }: { children: ReactNode }) {
     return () => window.clearTimeout(timeout);
   }, [notice]);
 
-  // Refresh the pending state after its server deadline in case a terminal event was missed.
   useEffect(() => {
     const invitation = pending.incoming ?? pending.outgoing;
     if (!invitation || !connected) return;
-    const timeout = window.setTimeout(() => {
-      void syncRef.current().catch((error) => setActionError(errorMessage(error)));
-    }, Math.max(0, Date.parse(invitation.expiresAt) - Date.now()) + 500);
+    const timeout = window.setTimeout(
+      () => {
+        void syncRef
+          .current()
+          .catch((error) => setActionError(errorMessage(error)));
+      },
+      Math.max(0, Date.parse(invitation.expiresAt) - Date.now()) + 500,
+    );
     return () => window.clearTimeout(timeout);
   }, [pending, connected]);
 
   async function startCall(input: StartCallInput) {
-    if (requestInProgress.current || pendingRef.current.incoming || pendingRef.current.outgoing) {
+    if (
+      requestInProgress.current ||
+      pendingRef.current.incoming ||
+      pendingRef.current.outgoing
+    ) {
       throw new Error("Finish your current call request first.");
     }
     requestInProgress.current = true;
@@ -388,7 +485,11 @@ export function CallProvider({ children }: { children: ReactNode }) {
     setStarting(true);
     setNotice("");
     try {
-      const invitation = await socketRequest<CallInvitation>(socket, "call:request", input);
+      const invitation = await socketRequest<CallInvitation>(
+        socket,
+        "call:request",
+        input,
+      );
       if (sessionEpoch.current !== epoch) return;
       if (!settledRequests.current.has(invitation.requestId)) {
         const calls = { incoming: null, outgoing: invitation };
@@ -398,7 +499,6 @@ export function CallProvider({ children }: { children: ReactNode }) {
       }
     } catch (error) {
       if (sessionEpoch.current !== epoch) return;
-      // A lost acknowledgement must not leave a real outgoing call without a Cancel button.
       await syncRef.current().catch(() => {});
       throw error;
     } finally {
@@ -410,15 +510,25 @@ export function CallProvider({ children }: { children: ReactNode }) {
   }
 
   async function decide(action: "accept" | "reject" | "cancel") {
-    const invitation = action === "cancel" ? pendingRef.current.outgoing : pendingRef.current.incoming;
+    const invitation =
+      action === "cancel"
+        ? pendingRef.current.outgoing
+        : pendingRef.current.incoming;
     if (!invitation || decisionInProgress.current) return;
     const epoch = sessionEpoch.current;
     decisionInProgress.current = true;
     setActing(true);
     setActionError("");
-    const event = action === "accept" ? "call:accepted" : action === "reject" ? "call:rejected" : "call:cancelled";
+    const event =
+      action === "accept"
+        ? "call:accepted"
+        : action === "reject"
+          ? "call:rejected"
+          : "call:cancelled";
     try {
-      const result = await socketRequest<AcceptedCall>(socket, event, { requestId: invitation.requestId });
+      const result = await socketRequest<AcceptedCall>(socket, event, {
+        requestId: invitation.requestId,
+      });
       if (sessionEpoch.current !== epoch) return;
       if (action === "accept") acceptRef.current(result);
     } catch (error) {
@@ -436,13 +546,18 @@ export function CallProvider({ children }: { children: ReactNode }) {
   const invitation = pending.incoming ?? pending.outgoing;
 
   return (
-    <CallsContext.Provider value={{
-      user,
-      socket,
-      connected,
-      busy: starting || !!invitation || location.pathname.startsWith("/callroom/"),
-      startCall,
-    }}>
+    <CallsContext.Provider
+      value={{
+        user,
+        socket,
+        connected,
+        busy:
+          starting ||
+          !!invitation ||
+          location.pathname.startsWith("/callroom/"),
+        startCall,
+      }}
+    >
       {children}
       {invitation && (
         <CallPrompt
@@ -452,14 +567,28 @@ export function CallProvider({ children }: { children: ReactNode }) {
           connected={connected}
           acting={acting}
           error={actionError}
-          onAccept={() => { void decide("accept"); }}
-          onDismiss={() => { void decide(pending.incoming ? "reject" : "cancel"); }}
+          onAccept={() => {
+            void decide("accept");
+          }}
+          onDismiss={() => {
+            void decide(pending.incoming ? "reject" : "cancel");
+          }}
         />
       )}
       {notice && !invitation && (
-        <div role="status" className="fixed right-4 bottom-4 z-50 flex max-w-sm items-start gap-4 rounded-2xl border border-[#ACA9FF] bg-white px-5 py-4 text-sm text-[#0A0332] shadow-xl">
+        <div
+          role="status"
+          className="fixed right-4 bottom-4 z-50 flex max-w-sm items-start gap-4 rounded-2xl border border-[#ACA9FF] bg-white px-5 py-4 text-sm text-[#0A0332] shadow-xl"
+        >
           <p>{notice}</p>
-          <button type="button" aria-label="Dismiss call notification" onClick={() => setNotice("")} className="shrink-0 rounded p-1 hover:bg-slate-100"><X size={16} /></button>
+          <button
+            type="button"
+            aria-label="Dismiss call notification"
+            onClick={() => setNotice("")}
+            className="shrink-0 rounded p-1 hover:bg-slate-100"
+          >
+            <X size={16} />
+          </button>
         </div>
       )}
     </CallsContext.Provider>
