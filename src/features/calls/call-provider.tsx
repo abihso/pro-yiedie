@@ -101,7 +101,7 @@ function CallPrompt({
           </p>
           <h2
             id="call-prompt-title"
-            className="mt-1 break-words text-xl font-bold text-[#0A0332]"
+            className="mt-1 wrap-break-word text-xl font-bold text-[#0A0332]"
           >
             {name}
           </h2>
