@@ -68,6 +68,35 @@ const Dashboard = () => {
 
   const navItems = ["Dashboard", "Why Yiedie", "How it works", "Pricing"];
 
+  const sidebarGroups = [
+    [
+      { icon: "mynaui:users-group", label: "Counselors" },
+      { icon: "vadivam:network", label: "Organisation" },
+    ],
+    [
+      {
+        icon: "weui:discover-outlined",
+        label: "Discover",
+        link: "/dashboard/discovery",
+      },
+      { icon: "solar:feed-linear", label: "Feeds", link: "/dashboard/feeds" },
+      { icon: "reicon:save", label: "Saved" },
+    ],
+    [
+      {
+        icon: "mage:message-round",
+        label: "Message",
+        link: "/dashboard/messages",
+      },
+      { icon: "arcticons:google-journal", label: "My Journals" },
+      { icon: "grommet-icons:resources", label: "Resources" },
+    ],
+    [
+      { icon: "akar-icons:schedule", label: "Schedule" },
+      { icon: "qlementine-icons:task-16", label: "Task" },
+    ],
+  ];
+
   return (
     <div className="min-h-screen bg-[#f8fafc] overflow-x-hidden">
       {/* Top Header Section */}
@@ -189,12 +218,6 @@ const Dashboard = () => {
               className="w-10 h-10 text-white"
             />
           </div>
-          {/* <button
-            onClick={() => scroll("left")}
-            className="p-2 rounded-full bg-white shadow-sm hover:bg-gray-100 active:scale-90 transition-all duration-200 cursor-pointer border border-gray-200 hover:border-gray-300"
-          >
-            <ChevronLeft />
-          </button> */}
         </div>
 
         <div
@@ -229,12 +252,6 @@ const Dashboard = () => {
         </div>
 
         <div className="w-full xl:w-fit flex items-center justify-between xl:justify-start gap-2 px-2 shrink-0">
-          {/* <button
-            onClick={() => scroll("right")}
-            className="p-2 rounded-full bg-white shadow-sm hover:bg-gray-100 active:scale-90 transition-all duration-200 cursor-pointer border border-gray-200 hover:border-gray-300 xl:order-first"
-          >
-            <ChevronRight />
-          </button> */}
           <div className="bg-color6 h-14 rounded-xl flex flex-col justify-center items-start px-6 sm:px-8 w-full xl:w-87.5 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 cursor-pointer">
             <p className="text-xs sm:text-sm font-bold text-white truncate w-full">
               keep going to reach and improve even more.
@@ -248,68 +265,58 @@ const Dashboard = () => {
 
       {/* Main Content Dashboard Grid Layout */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[70px_minmax(0,1fr)_minmax(0,2fr)_minmax(0,1.2fr)] min-h-[50vh] px-3 sm:px-5 gap-3 my-6 items-start">
-        {/* Left Sidebar Icon Column with Hover Tooltips */}
-        <div className="relative flex flex-col gap-3 py-5 bg-color6 border border-[#c1c1ff] rounded-2xl min-h-17.5 lg:min-h-full items-center">
-          {[
-            { icon: "mynaui:users-group", label: "Counselors" },
-            { icon: "vadivam:network", label: "Organisation" },
-            { divider: true },
-            {
-              icon: "weui:discover-outlined",
-              label: "Discover",
-              link: "/dashboard/discovery",
-            },
-            {
-              icon: "solar:feed-linear",
-              label: "Feeds",
-              link: "/dashboard/feeds",
-            },
-            { icon: "reicon:save", label: "Saved" },
-            { divider: true },
-            {
-              icon: "mage:message-round",
-              label: "Message",
-              link: "/dashboard/messages",
-            },
-            { icon: "arcticons:google-journal", label: "My Journals" },
-            { icon: "grommet-icons:resources", label: "Resources" },
-            { divider: true },
-            { icon: "akar-icons:schedule", label: "Schedule" },
-            { icon: "qlementine-icons:task-16", label: "Task" },
-            { divider: true },
-            { icon: "uil:setting", label: "Settings", isBottom: true },
-          ].map((item, idx) => {
-            if (item.divider) {
-              return (
-                <div
-                  key={`div-${idx}`}
-                  className="border border-[#DEDEDE] my-1 w-[80%]"
-                />
-              );
-            }
-
-            return (
-              <button
-                key={idx}
-                onClick={() => item.link && (window.location.href = item.link)}
-                className={`relative group flex items-center justify-center w-full h-10 px-3 cursor-pointer bg-transparent border-none transition-transform duration-200 active:scale-90 ${
-                  item.isBottom ? "absolute bottom-5" : ""
-                }`}
+        {/* Left Sidebar Icon Column */}
+        <div className="flex flex-col justify-between items-center py-6 bg-color6 border border-[#c1c1ff] rounded-2xl w-full min-h-[620px] lg:min-h-full">
+          <div className="flex flex-col items-center gap-2 w-full">
+            {sidebarGroups.map((group, gIdx) => (
+              <div
+                key={gIdx}
+                className="flex flex-col items-center gap-2 w-full"
               >
-                <Icon
-                  icon={item.icon!}
-                  className="text-4xl text-[#aabfe1] group-hover:text-[#1900FF] shrink-0 transition-all duration-200 group-hover:scale-110"
-                />
-                <div className="absolute z-10 left-16 h-10 w-32 pl-4 items-center justify-start hidden group-hover:flex">
-                  <div className="h-10 w-25 bg-[#0A0332] py-2 px-4 rounded-lg flex items-center justify-center shadow-md relative transition-transform duration-200 animate-in fade-in slide-in-from-left-2 before:content-[''] before:absolute before:right-full before:top-1/2 before:-translate-y-1/2 before:border-[6px] before:border-transparent before:border-r-[#0A0332]">
-                    <p className="text-white font-bold text-sm tracking-tight whitespace-nowrap">
-                      {item.label}
-                    </p>
-                  </div>
+                {group.map((item, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() =>
+                      item.link && (window.location.href = item.link)
+                    }
+                    className="relative group flex items-center justify-center w-full h-10 px-3 cursor-pointer bg-transparent border-none transition-transform duration-200 active:scale-90"
+                  >
+                    <Icon
+                      icon={item.icon}
+                      className="text-4xl text-[#aabfe1] group-hover:text-[#1900FF] shrink-0 transition-all duration-200 group-hover:scale-110"
+                    />
+                    <div className="absolute z-10 left-16 h-10 w-32 pl-4 items-center justify-start hidden group-hover:flex">
+                      <div className="h-10 w-25 bg-[#0A0332] py-2 px-4 rounded-lg flex items-center justify-center shadow-md relative transition-transform duration-200 animate-in fade-in slide-in-from-left-2 before:content-[''] before:absolute before:right-full before:top-1/2 before:-translate-y-1/2 before:border-[6px] before:border-transparent before:border-r-[#0A0332]">
+                        <p className="text-white font-bold text-sm tracking-tight whitespace-nowrap">
+                          {item.label}
+                        </p>
+                      </div>
+                    </div>
+                  </button>
+                ))}
+                {gIdx < sidebarGroups.length - 1 && (
+                  <div className="border border-[#DEDEDE] my-1 w-[80%]" />
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="w-full flex flex-col items-center pt-2">
+            <div className="border border-[#DEDEDE] mb-2 w-[80%]" />
+            <button className="relative group flex items-center justify-center w-full h-10 px-3 cursor-pointer bg-transparent border-none transition-transform duration-200 active:scale-90">
+              <Icon
+                icon="uil:setting"
+                className="text-4xl text-[#aabfe1] group-hover:text-[#1900FF] shrink-0 transition-all duration-200 group-hover:scale-110"
+              />
+              <div className="absolute z-10 left-16 h-10 w-32 pl-4 items-center justify-start hidden group-hover:flex">
+                <div className="h-10 w-25 bg-[#0A0332] py-2 px-4 rounded-lg flex items-center justify-center shadow-md relative transition-transform duration-200 animate-in fade-in slide-in-from-left-2 before:content-[''] before:absolute before:right-full before:top-1/2 before:-translate-y-1/2 before:border-[6px] before:border-transparent before:border-r-[#0A0332]">
+                  <p className="text-white font-bold text-sm tracking-tight whitespace-nowrap">
+                    Settings
+                  </p>
                 </div>
-              </button>
-            );
-          })}
+              </div>
+            </button>
+          </div>
         </div>
 
         {/* Messages Section */}
@@ -393,7 +400,7 @@ const Dashboard = () => {
               </p>
             </div>
 
-            {/* Featured Appointment Item (Overflow Fixed) */}
+            {/* Featured Appointment Item */}
             <div className="flex flex-col sm:flex-row justify-between bg-[#C9C9CD] p-3 sm:px-3 sm:py-2 min-h-14 rounded-2xl sm:rounded-full items-center gap-2 sm:gap-3 transition-all duration-200 hover:bg-[#b8b8bc] hover:shadow-md cursor-pointer hover:-translate-y-0.5">
               <div className="flex items-center gap-3 w-full sm:w-auto shrink-0">
                 <div className="h-10 w-10 rounded-full bg-[#0A0332] flex justify-center items-center shrink-0 transition-transform duration-200 hover:scale-110">
