@@ -356,7 +356,7 @@ export function CallProvider({ children }: { children: ReactNode }) {
           if (isCaller || isRecipient) {
             setNotice("");
             navigateRef.current(
-              `/callroom/session?callId=${encodeURIComponent(call.callId)}`,
+              `/callroom/two-people-call?callId=${encodeURIComponent(call.callId)}`,
               {
                 state: {
                   peerName: isCaller ? call.targetUserName : call.fromUserName,

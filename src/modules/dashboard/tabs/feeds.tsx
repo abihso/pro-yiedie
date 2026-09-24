@@ -598,7 +598,8 @@ const Feeds = () => {
                   return (
                     <button
                       key={idx}
-                      className="flex items-center gap-2 p-2 rounded-lg cursor-pointer transition-all duration-200 hover:bg-black/5 dark:hover:bg-white/5 hover:translate-x-1 active:scale-95"
+                      onClick={() => item.link == "home" ? window.location.href = "/home" : null}
+                      className="flex w-full items-center gap-2 p-2 rounded-lg cursor-pointer transition-all duration-200 hover:bg-black/5 dark:hover:bg-white/5 hover:translate-x-1 active:scale-95"
                     >
                       <Icon
                         height="1em"

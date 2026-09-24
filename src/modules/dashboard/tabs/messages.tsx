@@ -298,6 +298,7 @@ const MessagesPanel = () => {
             className="text-3xl text-color4 cursor-pointer transition-transform duration-200 hover:scale-125 active:scale-90"
           />
           <OrganizationIcon
+            onClick={() => window.location.href = "/home"}
             height="1em"
             className="text-3xl text-color4 cursor-pointer transition-transform duration-200 hover:scale-125 active:scale-90"
           />
